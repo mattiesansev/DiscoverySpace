@@ -38,7 +38,7 @@ import android.support.v7.app.AppCompatActivity;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private GoogleMap mMap = null;
 
 
 
@@ -58,15 +58,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //center camera at her stuff
         //add pins
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng currentLoc = new LatLng(myLat, myLong);
+        mMap.addMarker(new MarkerOptions().position(currentLoc).title("Your Location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLoc));
+//        locs[1] = new LatLng(34, 119);
+//        locs[2] =  new LatLng(20, 130);
+        if(null != locs) {
+            Log.i("size of message: ", " "+ size);
+            for (int i = 0; i < size; i++) {
+                LatLng l = locs[i];
+                mMap.addMarker(new MarkerOptions().position(l).title(names[i] + " is a meteor of mass " +
+                        masses[i] + " that landed here in " + dates[i]));
+            }
+        }
+
     }
 
     private GoogleApiClient client;
     Location loc;
     double myLat;
     double myLong;
+    int size;
+    private LatLng[] locs = new LatLng[10];
+    private String[] names = new String[10];
+    private String[] dates = new String[10];
+    private String[] masses = new String [10];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,14 +92,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
         Gson gson = new GsonBuilder().setLenient().create();
 
         // Because Kasey is lazyyyyyyy
@@ -114,10 +122,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         });
-//        LocationManager manager = new LocationManager();
-//        manager.setLocation();
-//        double myLat = manager.getLat();
-//        double myLong = manager.getLong();
+
         if (!LocationProvider.hasPermissions(this)) {
             LocationProvider.checkPermissions(this);
         } else {
@@ -131,18 +136,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if(loc != null){
                 myLat = loc.getLatitude();
                 myLong = loc.getLongitude();
+                Log.i("currentlocation", " "+ myLat + " " + myLong);
             }
         }
         disco.search(myLat, myLong).enqueue(new Callback<List<myData>>() {
             @Override
                 public void onResponse(Call<List<myData>> call, Response<List<myData>> response) {
                 if(null != response.body()) {
+                    int i = 0;
+                    size = 0;
                     for (myData d : response.body()) {
-                        Log.i("ChrisRulesKaseyDrools", d.event);
+
+                        //Log.i("ChrisRulesKaseyDrools", d.event);
+                        //locs[i] = new LatLng(d.lat, d.lon);
+                        //names[i] = d.name;
+                        //dates[i] = d.date;
+                        //masses[i] = d.mass;
+                        Log.i("first lat: ", " " + d.lat);
+
+                        LatLng l = new LatLng(d.lat, d.lon);
+                        if (d.mass != null) {
+                            mMap.addMarker(new MarkerOptions().position(l).title("name: " + d.name +
+                                    "mass: " + d.mass + "date: " + d.date));
+                        }
+                        else {
+                            mMap.addMarker(new MarkerOptions().position(l).title("name: " + d.name
+                                    + "date: " + d.date));
+                        }
+
                     }
                 }
 
                 Log.i("Chris", response.message());
+
+
             }
 
             @Override

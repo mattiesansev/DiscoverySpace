@@ -6,10 +6,13 @@ package mattiesansev.discoverspace;
 
 public class myData {
 
-        public double latitude;
-        public double longitude;
+        public double lat;
+        public double lon;
         public String event;
         public String test;
+        public String name;
+        public String date;
+        public String mass;
 
     }
 
