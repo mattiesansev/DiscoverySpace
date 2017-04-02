@@ -97,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl("http://10.203.114.108:5000/")
+                .baseUrl("http://192.168.0.101:5000/")
                 .client(okHttpClient)
                 .build();
         final Discovery disco = retrofit.create(Discovery.class);
