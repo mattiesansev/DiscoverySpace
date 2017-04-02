@@ -11,7 +11,7 @@ public class myData {
         public String event;
         public String test;
         public String name;
-        public String date;
+        public String year;
         public String mass;
 
     }

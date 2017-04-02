@@ -63,7 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             for (int i = 0; i < size; i++) {
                 LatLng l = locs[i];
                 mMap.addMarker(new MarkerOptions().position(l).title(names[i] + " is a meteor of mass " +
-                        masses[i] + " that landed here in " + dates[i]));
+                        masses[i] + " that landed here in " + years[i]));
             }
         }
 
@@ -76,7 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     int size;
     private LatLng[] locs = new LatLng[10];
     private String[] names = new String[10];
-    private String[] dates = new String[10];
+    private String[] years = new String[10];
     private String[] masses = new String [10];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,25 +150,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.i("first lat: ", " " + d.lat);
 
                         LatLng l = new LatLng(d.lat, d.lon);
-                        if (d.mass != null && d.date != null) {
-                            mMap.addMarker(new MarkerOptions().position(l).title("name: " + d.name +
-                                    " mass: " + d.mass + " date: " + d.date))
+                        if (d.mass != null && d.year != null) {
+                            mMap.addMarker(new MarkerOptions().position(l).title("Meteor " + d.name).snippet("Has a mass of " + d.mass + "g and landed here in " + d.year))
                             .setIcon(BitmapDescriptorFactory.fromResource(R.drawable.meteorites));
                         }
-                        else if (d.mass == null && d.date == null){
-                            mMap.addMarker(new MarkerOptions().position(l).title("name: " + d.name
+                        else if (d.mass == null && d.year == null){
+                            mMap.addMarker(new MarkerOptions().position(l).title("Meteor " + d.name
                                     ))
                                     .setIcon(BitmapDescriptorFactory.fromResource(R.drawable.meteorites));
 
                         }
-                        else if (d.date == null){
-                            mMap.addMarker(new MarkerOptions().position(l).title("name: " + d.name
-                                    + " mass: " + d.mass))
+                        else if (d.year == null){
+                            mMap.addMarker(new MarkerOptions().position(l).title("Meteor " + d.name).snippet("Has a mass of " + d.mass + "g"))
                                     .setIcon(BitmapDescriptorFactory.fromResource(R.drawable.meteorites));
                         }
                         else {
-                            mMap.addMarker(new MarkerOptions().position(l).title("name: " + d.name
-                                    + " date: " + d.date))
+                            mMap.addMarker(new MarkerOptions().position(l).title("Meteor " + d.name).snippet("Landed here in " + d.year))
                                     .setIcon(BitmapDescriptorFactory.fromResource(R.drawable.meteorites)); }
 
 
