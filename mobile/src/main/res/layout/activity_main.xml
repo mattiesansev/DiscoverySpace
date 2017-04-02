@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="mattiesansev.discoverspace.MainActivity">
+    tools:context="mattiesansev.discoverspace.MainActivity"
+    android:background="@drawable/backgroundimage">
 
     <TextView
         android:text="Welcome to Discovery Space!"

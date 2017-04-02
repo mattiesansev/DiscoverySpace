@@ -2,13 +2,9 @@ package mattiesansev.discoverspace;
 
 import android.location.Location;
 import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -18,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
@@ -32,8 +29,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import android.support.v7.app.AppCompatActivity;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -155,14 +150,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.i("first lat: ", " " + d.lat);
 
                         LatLng l = new LatLng(d.lat, d.lon);
-                        if (d.mass != null) {
+                        if (d.mass != null && d.date != null) {
                             mMap.addMarker(new MarkerOptions().position(l).title("name: " + d.name +
-                                    "mass: " + d.mass + "date: " + d.date));
+                                    " mass: " + d.mass + " date: " + d.date))
+                            .setIcon(BitmapDescriptorFactory.fromResource(R.drawable.meteorites));
+                        }
+                        else if (d.mass == null && d.date == null){
+                            mMap.addMarker(new MarkerOptions().position(l).title("name: " + d.name
+                                    ))
+                                    .setIcon(BitmapDescriptorFactory.fromResource(R.drawable.meteorites));
+
+                        }
+                        else if (d.date == null){
+                            mMap.addMarker(new MarkerOptions().position(l).title("name: " + d.name
+                                    + " mass: " + d.mass))
+                                    .setIcon(BitmapDescriptorFactory.fromResource(R.drawable.meteorites));
                         }
                         else {
                             mMap.addMarker(new MarkerOptions().position(l).title("name: " + d.name
-                                    + "date: " + d.date));
-                        }
+                                    + " date: " + d.date))
+                                    .setIcon(BitmapDescriptorFactory.fromResource(R.drawable.meteorites)); }
+
+
+
+
 
                     }
                 }
